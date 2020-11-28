@@ -5,7 +5,6 @@ import io.grpc.ServerBuilder
 
 import io.ktor.application.*
 import io.ktor.server.engine.*
-import java.util.concurrent.TimeUnit
 
 @EngineAPI
 object GrpcFactory : ApplicationEngineFactory<GrpcEngine, GrpcConfiguration> {
@@ -18,6 +17,7 @@ object GrpcFactory : ApplicationEngineFactory<GrpcEngine, GrpcConfiguration> {
 class GrpcConfiguration: BaseApplicationEngine.Configuration() {
     var port = 4000
     var configure: ServerBuilder<*>.() -> Unit = {}
+    var module: Application.() -> Unit = {}
 }
 
 @EngineAPI
@@ -30,9 +30,7 @@ class GrpcEngine(environment: ApplicationEngineEnvironment, val configure: GrpcC
         server = ServerBuilder
             .forPort(configuration.port)
             .apply(configuration.configure)
-            .build()
-
-        server!!.start()
+            .build().start()
 
         if (wait) {
             server!!.awaitTermination()
