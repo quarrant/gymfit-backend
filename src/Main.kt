@@ -3,34 +3,17 @@ package com.gymfit.backend
 import io.ktor.server.engine.EngineAPI
 import io.ktor.server.engine.embeddedServer
 
-import io.grpc.stub.StreamObserver
-import io.ktor.application.*
-import io.ktor.features.*
-import io.ktor.routing.*
-import org.slf4j.event.Level
-
+import com.gymfit.backend.infrastructure.*
+import com.gymfit.backend.presenters.*
 
 @EngineAPI
-fun main(args: Array<String>): Unit {
+fun main(args: Array<String>) {
+//    var db = DatabaseFactory.init()
     embeddedServer(GrpcFactory, configure = {
         port = 4000
-        module = Application::module
         configure = {
-            addService(AuthenticationServiceImpl())
+            addService(AuthenticationGrpcService())
+            addService(AccountGrpcService())
         }
-    }){}.start(true)
-}
-
-@Suppress("unused") // Referenced in application.conf
-fun Application.module() {
-    install(CallLogging) {
-        level = Level.INFO
-    }
-}
-
-class AuthenticationServiceImpl: AuthenticationServiceGrpcKt.AuthenticationServiceCoroutineImplBase() {
-    override suspend fun signInAnonymous(request: SignInAnonymousRequest): SignInAnonymousResponse {
-        val response = SignInAnonymousResponse.newBuilder()
-        return response.build()
-    }
+    }) {}.start(true)
 }

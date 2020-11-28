@@ -1,7 +1,7 @@
 syntax = "proto3";
 option java_multiple_files = true;
-option java_outer_classname = "GymfitBackendApi";
-option java_package = "com.gymfit.backend";
+option java_outer_classname = "AuthenticationPackage";
+option java_package = "generated.proto";
 
 package GymfitBackendApi;
 

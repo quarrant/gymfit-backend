@@ -1,0 +1,16 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_outer_classname = "AccountPackage";
+option java_package = "generated.proto";
+
+package GymfitBackendApi;
+
+service AccountService {
+  rpc GetAccountInfo (GetAccountInfoRequest) returns (GetAccountInfoResponse) {}
+}
+
+message GetAccountInfoRequest {
+  string id = 1;
+}
+
+message GetAccountInfoResponse {}

@@ -1,29 +1,26 @@
-package com.gymfit.backend
+package com.gymfit.backend.infrastructure
 
 import io.grpc.Server
 import io.grpc.ServerBuilder
-
 import io.ktor.application.*
 import io.ktor.server.engine.*
 
 @EngineAPI
-object GrpcFactory : ApplicationEngineFactory<GrpcEngine, GrpcConfiguration> {
-    override fun create(environment: ApplicationEngineEnvironment, configure: GrpcConfiguration.() -> Unit): GrpcEngine {
+object GrpcFactory: ApplicationEngineFactory<GrpcEngine, GrpcEngine.Configuration> {
+    override fun create(environment: ApplicationEngineEnvironment, configure: GrpcEngine.Configuration.() -> Unit): GrpcEngine {
         return GrpcEngine(environment, configure)
     }
 }
 
 @EngineAPI
-class GrpcConfiguration: BaseApplicationEngine.Configuration() {
-    var port = 4000
-    var configure: ServerBuilder<*>.() -> Unit = {}
-    var module: Application.() -> Unit = {}
-}
+class GrpcEngine(environment: ApplicationEngineEnvironment, configure: Configuration.() -> Unit = {}): BaseApplicationEngine(environment) {
 
-@EngineAPI
-class GrpcEngine(environment: ApplicationEngineEnvironment, val configure: GrpcConfiguration.() -> Unit = {}): BaseApplicationEngine(environment) {
+    class Configuration: BaseApplicationEngine.Configuration() {
+        var port = 4000
+        var configure: ServerBuilder<*>.() -> Unit = {}
+    }
 
-    private val configuration = GrpcConfiguration().apply(configure)
+    private val configuration = Configuration().apply(configure)
     private var server: Server? = null
 
     override fun start(wait: Boolean): ApplicationEngine {
