@@ -6,8 +6,8 @@ import io.ktor.util.KtorExperimentalAPI
 
 import com.gymfit.backend.domain.entities.*
 import com.gymfit.backend.domain.repositories.*
-
-import com.gymfit.backend.infrastructure.*
+import com.gymfit.backend.infrastructure.grpc.GrpcFactory
+import com.gymfit.backend.infrastructure.database.DatabaseFactory
 import com.gymfit.backend.presenters.*
 
 

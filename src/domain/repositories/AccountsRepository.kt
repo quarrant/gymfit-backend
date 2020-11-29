@@ -8,7 +8,7 @@ import org.jetbrains.exposed.sql.select
 import com.gymfit.backend.domain.entities.Account
 import com.gymfit.backend.domain.entities.AccountsTable
 
-import com.gymfit.backend.infrastructure.DatabaseFactory
+import com.gymfit.backend.infrastructure.database.DatabaseFactory
 
 import java.util.UUID
 

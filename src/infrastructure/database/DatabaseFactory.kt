@@ -1,4 +1,4 @@
-package com.gymfit.backend.infrastructure
+package com.gymfit.backend.infrastructure.database
 
 import com.typesafe.config.ConfigFactory
 
@@ -8,11 +8,8 @@ import io.ktor.config.HoconApplicationConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
-
-import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.*
 
 @KtorExperimentalAPI
 object DatabaseFactory {
@@ -28,6 +25,7 @@ object DatabaseFactory {
             Database.connect(url, driver = driver, user = username, password = password)
 
             transaction {
+                addLogger(StdOutSqlLogger)
                 SchemaUtils.createMissingTablesAndColumns(*tables)
             }
 
