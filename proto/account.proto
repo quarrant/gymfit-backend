@@ -6,11 +6,17 @@ option java_package = "generated.proto";
 package GymfitBackendApi;
 
 service AccountService {
-  rpc GetAccountInfo (GetAccountInfoRequest) returns (GetAccountInfoResponse) {}
+  rpc GetAccount (GetAccountRequest) returns (GetAccountResponse) {}
 }
 
-message GetAccountInfoRequest {
+message GetAccountRequest {
   string id = 1;
 }
 
-message GetAccountInfoResponse {}
+message GetAccountResponse {
+  Account account = 1;
+}
+
+message Account {
+  string id = 1;
+}

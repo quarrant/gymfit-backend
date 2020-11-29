@@ -9,7 +9,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
+
+import org.jetbrains.exposed.sql.Table
 
 @KtorExperimentalAPI
 object DatabaseFactory {
@@ -20,11 +23,18 @@ object DatabaseFactory {
     private val username = appConfig.property("database.username").getString()
     private val password = appConfig.property("database.password").getString()
 
-    fun init() {
+    fun init(tables: Array<Table>): DatabaseFactory {
         try {
             Database.connect(url, driver = driver, user = username, password = password)
+
+            transaction {
+                SchemaUtils.createMissingTablesAndColumns(*tables)
+            }
+
+            return this
         } catch (error: Exception) {
             print("Database connection error ${error.message}")
+            throw error
         }
     }
 
