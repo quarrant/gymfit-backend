@@ -16,12 +16,12 @@ class AccountEntity(id: EntityID<UUID>): UUIDEntity(id) {
 
     var name by AccountsTable.name
 
-    fun toDomain(): AccountDAO {
-        return AccountDAO(id.value)
+    fun toDomain(): AccountModel {
+        return AccountModel(id.value)
     }
 
 }
 
-data class AccountDAO(
+data class AccountModel(
     val id: UUID
 )
