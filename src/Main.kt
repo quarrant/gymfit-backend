@@ -16,7 +16,7 @@ import com.gymfit.backend.presenters.*
 fun main(args: Array<String>) {
     val database = DatabaseFactory.init(arrayOf(AccountsTable))
 
-    val accountsRepository = AccountsRepository(database, AccountsTable)
+    val accountsRepository = AccountsRepository(database)
 
     embeddedServer(GrpcFactory, configure = {
         port = 4000

@@ -1,14 +1,27 @@
 package com.gymfit.backend.domain.entities
 
-import org.jetbrains.exposed.sql.Column
-import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.dao.EntityID
+import org.jetbrains.exposed.dao.UUIDEntity
+import org.jetbrains.exposed.dao.UUIDEntityClass
+import org.jetbrains.exposed.dao.UUIDTable
+
 import java.util.UUID
 
-object AccountsTable: Table("accounts") {
-    val id: Column<UUID> = uuid("id").primaryKey()
-    val name: Column<String> = varchar("name", 256)
+object AccountsTable: UUIDTable("accounts") {
+    val name = varchar("name", 256)
 }
 
-data class Account(
+class AccountEntity(id: EntityID<UUID>): UUIDEntity(id) {
+    companion object: UUIDEntityClass<AccountEntity>(AccountsTable)
+
+    var name by AccountsTable.name
+
+    fun toDomain(): AccountDAO {
+        return AccountDAO(id.value)
+    }
+
+}
+
+data class AccountDAO(
     val id: UUID
 )
